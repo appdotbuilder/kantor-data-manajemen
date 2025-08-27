@@ -1,6 +1,6 @@
 import { type LoginInput, type LoginResponse } from '../schema';
 
-const VALID_EMAIL = 'kwarran.pagerbaang@gmail.com';
+const VALID_EMAIL = 'kwarran.pagerbarang@gmail.com';
 const VALID_PASSWORD = 'Pgb112815';
 
 export const login = async (input: LoginInput): Promise<LoginResponse> => {

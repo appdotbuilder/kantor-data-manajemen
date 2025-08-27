@@ -98,7 +98,7 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setFormData((prev: LoginInput) => ({ ...prev, email: e.target.value }))
                     }
-                    placeholder="kwarran.pagerbaang@gmail.com"
+                    placeholder="kwarran.pagerbarang@gmail.com"
                     className="pl-10 h-11"
                     required
                   />
