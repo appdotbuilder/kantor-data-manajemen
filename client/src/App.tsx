@@ -1,16 +1,49 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Package, Mail, SendHorizontal, ArrowLeft, Building2 } from 'lucide-react';
+import { Package, Mail, SendHorizontal, ArrowLeft, Building2, LogOut, User } from 'lucide-react';
 import InventoryManagement from '@/components/InventoryManagement';
 import IncomingMailManagement from '@/components/IncomingMailManagement';
 import OutgoingMailManagement from '@/components/OutgoingMailManagement';
+import { LoginForm } from '@/components/LoginForm';
 
 type AppView = 'dashboard' | 'inventory' | 'incoming-mail' | 'outgoing-mail';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState<string>('');
   const [currentView, setCurrentView] = useState<AppView>('dashboard');
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  // Check login status on app load
+  useEffect(() => {
+    const checkAuthStatus = () => {
+      const loginStatus = localStorage.getItem('isLoggedIn');
+      const storedEmail = localStorage.getItem('userEmail');
+      
+      if (loginStatus === 'true' && storedEmail) {
+        setIsLoggedIn(true);
+        setUserEmail(storedEmail);
+      }
+      setIsCheckingAuth(false);
+    };
+
+    checkAuthStatus();
+  }, []);
+
+  const handleLoginSuccess = (email: string) => {
+    setIsLoggedIn(true);
+    setUserEmail(email);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userEmail');
+    setIsLoggedIn(false);
+    setUserEmail('');
+    setCurrentView('dashboard');
+  };
 
   const navigateTo = (view: AppView) => {
     setCurrentView(view);
@@ -20,22 +53,61 @@ function App() {
     setCurrentView('dashboard');
   };
 
+  // Show loading while checking authentication
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Memuat...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show login form if not logged in
+  if (!isLoggedIn) {
+    return <LoginForm onLoginSuccess={handleLoginSuccess} />;
+  }
+
   if (currentView === 'inventory') {
-    return <InventoryManagement onBackToDashboard={goBackToDashboard} />;
+    return <InventoryManagement onBackToDashboard={goBackToDashboard} userEmail={userEmail} onLogout={handleLogout} />;
   }
 
   if (currentView === 'incoming-mail') {
-    return <IncomingMailManagement onBackToDashboard={goBackToDashboard} />;
+    return <IncomingMailManagement onBackToDashboard={goBackToDashboard} userEmail={userEmail} onLogout={handleLogout} />;
   }
 
   if (currentView === 'outgoing-mail') {
-    return <OutgoingMailManagement onBackToDashboard={goBackToDashboard} />;
+    return <OutgoingMailManagement onBackToDashboard={goBackToDashboard} userEmail={userEmail} onLogout={handleLogout} />;
   }
 
   // Dashboard view
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       <div className="container mx-auto p-6">
+        {/* User Header */}
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
+              <User className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">Selamat datang,</p>
+              <p className="font-semibold text-gray-900">{userEmail}</p>
+            </div>
+          </div>
+          <Button
+            onClick={handleLogout}
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2 hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-all duration-300"
+          >
+            <LogOut className="h-4 w-4" />
+            Keluar
+          </Button>
+        </div>
+
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">

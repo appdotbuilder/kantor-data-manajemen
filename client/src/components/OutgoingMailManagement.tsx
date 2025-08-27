@@ -6,15 +6,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, SendHorizontal, Plus, Edit2, Trash2, Search, Calendar } from 'lucide-react';
+import { ArrowLeft, SendHorizontal, Plus, Edit2, Trash2, Search, Calendar, User, LogOut } from 'lucide-react';
 import { trpc } from '@/utils/trpc';
 import type { OutgoingMail, CreateOutgoingMailInput, UpdateOutgoingMailInput } from '../../../server/src/schema';
 
 interface OutgoingMailManagementProps {
   onBackToDashboard: () => void;
+  userEmail: string;
+  onLogout: () => void;
 }
 
-export default function OutgoingMailManagement({ onBackToDashboard }: OutgoingMailManagementProps) {
+export default function OutgoingMailManagement({ onBackToDashboard, userEmail, onLogout }: OutgoingMailManagementProps) {
   const [outgoingMails, setOutgoingMails] = useState<OutgoingMail[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -132,6 +134,28 @@ export default function OutgoingMailManagement({ onBackToDashboard }: OutgoingMa
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50">
       <div className="container mx-auto p-6">
+        {/* User Header */}
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center">
+              <User className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">Pengelola Surat Keluar</p>
+              <p className="font-semibold text-gray-900">{userEmail}</p>
+            </div>
+          </div>
+          <Button
+            onClick={onLogout}
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2 hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-all duration-300"
+          >
+            <LogOut className="h-4 w-4" />
+            Keluar
+          </Button>
+        </div>
+
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
