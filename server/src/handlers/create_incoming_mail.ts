@@ -1,16 +1,28 @@
+import { db } from '../db';
+import { incomingMailTable } from '../db/schema';
 import { type CreateIncomingMailInput, type IncomingMail } from '../schema';
 
-export async function createIncomingMail(input: CreateIncomingMailInput): Promise<IncomingMail> {
-    // This is a placeholder declaration! Real code should be implemented here.
-    // The goal of this handler is creating a new incoming mail record and persisting it in the database.
-    return Promise.resolve({
-        id: 0, // Placeholder ID
+export const createIncomingMail = async (input: CreateIncomingMailInput): Promise<IncomingMail> => {
+  try {
+    // Insert incoming mail record
+    const result = await db.insert(incomingMailTable)
+      .values({
         pengirim: input.pengirim,
-        tanggal_surat: input.tanggal_surat,
+        tanggal_surat: input.tanggal_surat.toISOString().split('T')[0], // Convert Date to YYYY-MM-DD string
         nomor_surat: input.nomor_surat,
         perihal: input.perihal,
-        lampiran: input.lampiran,
-        created_at: new Date(),
-        updated_at: new Date()
-    } as IncomingMail);
-}
+        lampiran: input.lampiran
+      })
+      .returning()
+      .execute();
+
+    const incomingMail = result[0];
+    return {
+      ...incomingMail,
+      tanggal_surat: new Date(incomingMail.tanggal_surat) // Convert string back to Date
+    };
+  } catch (error) {
+    console.error('Incoming mail creation failed:', error);
+    throw error;
+  }
+};

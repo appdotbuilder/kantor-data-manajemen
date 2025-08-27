@@ -1,17 +1,59 @@
+import { db } from '../db';
+import { inventoryTable } from '../db/schema';
 import { type UpdateInventoryInput, type Inventory } from '../schema';
+import { eq } from 'drizzle-orm';
 
-export async function updateInventory(input: UpdateInventoryInput): Promise<Inventory> {
-    // This is a placeholder declaration! Real code should be implemented here.
-    // The goal of this handler is updating an existing inventory item in the database.
-    return Promise.resolve({
-        id: input.id,
-        nama_barang: input.nama_barang || 'Sample Item',
-        jumlah: input.jumlah || 1,
-        deskripsi: input.deskripsi || null,
-        kode_inventaris: input.kode_inventaris || 'INV-001',
-        harga: input.harga || 0,
-        tempat: input.tempat || 'Sample Location',
-        created_at: new Date(),
-        updated_at: new Date()
-    } as Inventory);
-}
+export const updateInventory = async (input: UpdateInventoryInput): Promise<Inventory> => {
+  try {
+    // First, check if the inventory item exists
+    const existingItem = await db.select()
+      .from(inventoryTable)
+      .where(eq(inventoryTable.id, input.id))
+      .execute();
+
+    if (existingItem.length === 0) {
+      throw new Error(`Inventory item with id ${input.id} not found`);
+    }
+
+    // Prepare update values, only including defined fields
+    const updateValues: any = {
+      updated_at: new Date()
+    };
+
+    if (input.nama_barang !== undefined) {
+      updateValues.nama_barang = input.nama_barang;
+    }
+    if (input.jumlah !== undefined) {
+      updateValues.jumlah = input.jumlah;
+    }
+    if (input.deskripsi !== undefined) {
+      updateValues.deskripsi = input.deskripsi;
+    }
+    if (input.kode_inventaris !== undefined) {
+      updateValues.kode_inventaris = input.kode_inventaris;
+    }
+    if (input.harga !== undefined) {
+      updateValues.harga = input.harga.toString(); // Convert number to string for numeric column
+    }
+    if (input.tempat !== undefined) {
+      updateValues.tempat = input.tempat;
+    }
+
+    // Update the inventory item
+    const result = await db.update(inventoryTable)
+      .set(updateValues)
+      .where(eq(inventoryTable.id, input.id))
+      .returning()
+      .execute();
+
+    // Convert numeric fields back to numbers before returning
+    const updatedItem = result[0];
+    return {
+      ...updatedItem,
+      harga: parseFloat(updatedItem.harga) // Convert string back to number
+    };
+  } catch (error) {
+    console.error('Inventory update failed:', error);
+    throw error;
+  }
+};

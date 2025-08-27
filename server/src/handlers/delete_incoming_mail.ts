@@ -1,7 +1,20 @@
+import { db } from '../db';
+import { incomingMailTable } from '../db/schema';
 import { type DeleteInput } from '../schema';
+import { eq } from 'drizzle-orm';
 
-export async function deleteIncomingMail(input: DeleteInput): Promise<{ success: boolean }> {
-    // This is a placeholder declaration! Real code should be implemented here.
-    // The goal of this handler is deleting an incoming mail record from the database by ID.
-    return Promise.resolve({ success: true });
-}
+export const deleteIncomingMail = async (input: DeleteInput): Promise<{ success: boolean }> => {
+  try {
+    // Delete the incoming mail record by ID
+    const result = await db.delete(incomingMailTable)
+      .where(eq(incomingMailTable.id, input.id))
+      .returning()
+      .execute();
+
+    // Return success based on whether a record was actually deleted
+    return { success: result.length > 0 };
+  } catch (error) {
+    console.error('Incoming mail deletion failed:', error);
+    throw error;
+  }
+};
