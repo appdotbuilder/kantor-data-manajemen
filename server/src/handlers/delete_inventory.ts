@@ -5,13 +5,13 @@ import { eq } from 'drizzle-orm';
 
 export const deleteInventory = async (input: DeleteInput): Promise<{ success: boolean }> => {
   try {
-    // Delete the inventory item by ID
+    // Delete inventory record
     const result = await db.delete(inventoryTable)
       .where(eq(inventoryTable.id, input.id))
+      .returning()
       .execute();
 
-    // Check if any rows were affected (item existed and was deleted)
-    return { success: (result.rowCount ?? 0) > 0 };
+    return { success: result.length > 0 };
   } catch (error) {
     console.error('Inventory deletion failed:', error);
     throw error;

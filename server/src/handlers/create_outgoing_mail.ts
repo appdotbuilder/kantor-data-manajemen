@@ -8,7 +8,7 @@ export const createOutgoingMail = async (input: CreateOutgoingMailInput): Promis
     const result = await db.insert(outgoingMailTable)
       .values({
         penerima: input.penerima,
-        tanggal_surat: input.tanggal_surat.toISOString().split('T')[0], // Convert Date to YYYY-MM-DD string
+        tanggal_surat: input.tanggal_surat.toISOString().split('T')[0], // Convert Date to string
         nomor_surat: input.nomor_surat,
         perihal: input.perihal,
         lampiran: input.lampiran
@@ -16,11 +16,11 @@ export const createOutgoingMail = async (input: CreateOutgoingMailInput): Promis
       .returning()
       .execute();
 
-    // Convert date string back to Date object before returning
-    const outgoingMail = result[0];
+    // Convert date string back to Date object
+    const record = result[0];
     return {
-      ...outgoingMail,
-      tanggal_surat: new Date(outgoingMail.tanggal_surat) // Convert string back to Date
+      ...record,
+      tanggal_surat: new Date(record.tanggal_surat) // Convert string back to Date
     };
   } catch (error) {
     console.error('Outgoing mail creation failed:', error);

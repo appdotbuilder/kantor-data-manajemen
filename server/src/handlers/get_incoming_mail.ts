@@ -4,15 +4,14 @@ import { type IncomingMail } from '../schema';
 
 export const getIncomingMail = async (): Promise<IncomingMail[]> => {
   try {
-    // Fetch all incoming mail records
     const results = await db.select()
       .from(incomingMailTable)
       .execute();
 
-    // Convert date strings to Date objects to match schema expectations
+    // Convert date strings back to Date objects
     return results.map(mail => ({
       ...mail,
-      tanggal_surat: new Date(mail.tanggal_surat)
+      tanggal_surat: new Date(mail.tanggal_surat) // Convert string back to Date
     }));
   } catch (error) {
     console.error('Failed to fetch incoming mail:', error);
