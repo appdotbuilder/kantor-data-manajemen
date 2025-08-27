@@ -150,7 +150,7 @@ export default function IncomingMailManagement({ onBackToDashboard }: IncomingMa
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-gray-900">Manajemen Surat Masuk</h1>
-                <p className="text-gray-600">Kelola arsip surat yang diterima kantor</p>
+                <p className="text-gray-600">Kelola arsip surat yang diterima Kwarran Pagerbarang</p>
               </div>
             </div>
           </div>

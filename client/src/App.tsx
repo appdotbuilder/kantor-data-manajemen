@@ -43,11 +43,11 @@ function App() {
               <Building2 className="h-8 w-8 text-white" />
             </div>
             <h1 className="text-4xl font-bold text-gray-900">
-              Sistem Manajemen Kantor
+              Sistem Manajemen Kwarran Pagerbarang
             </h1>
           </div>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Platform terpadu untuk mengelola inventaris dan surat-menyurat kantor dengan efisien
+            Platform terpadu untuk mengelola inventaris dan surat-menyurat Kwarran Pagerbarang dengan efisien
           </p>
         </div>
 
@@ -63,7 +63,7 @@ function App() {
                 Manajemen Inventaris
               </CardTitle>
               <CardDescription className="text-gray-600">
-                Kelola data barang dan aset kantor
+                Kelola data barang dan aset Kwarran Pagerbarang
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-0">
@@ -168,7 +168,7 @@ function App() {
         {/* Footer */}
         <div className="text-center mt-12 text-gray-500">
           <Badge variant="secondary" className="px-4 py-2">
-            💼 Sistem Manajemen Kantor v1.0
+            💼 Sistem Manajemen Kwarran Pagerbarang v1.0
           </Badge>
         </div>
       </div>

@@ -150,7 +150,7 @@ export default function InventoryManagement({ onBackToDashboard }: InventoryMana
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-gray-900">Manajemen Inventaris</h1>
-                <p className="text-gray-600">Kelola data barang dan aset kantor</p>
+                <p className="text-gray-600">Kelola data barang dan aset Kwarran Pagerbarang</p>
               </div>
             </div>
           </div>
@@ -184,7 +184,7 @@ export default function InventoryManagement({ onBackToDashboard }: InventoryMana
           <CardHeader>
             <CardTitle>Daftar Inventaris</CardTitle>
             <CardDescription>
-              Data lengkap inventaris kantor dengan informasi detail setiap item
+              Data lengkap inventaris Kwarran Pagerbarang dengan informasi detail setiap item
             </CardDescription>
           </CardHeader>
           <CardContent>

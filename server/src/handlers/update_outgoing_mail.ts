@@ -14,7 +14,7 @@ export const updateOutgoingMail = async (input: UpdateOutgoingMailInput): Promis
       updateData['penerima'] = input.penerima;
     }
     if (input.tanggal_surat !== undefined) {
-      updateData['tanggal_surat'] = input.tanggal_surat;
+      updateData['tanggal_surat'] = input.tanggal_surat.toISOString().split('T')[0]; // Convert Date to YYYY-MM-DD string
     }
     if (input.nomor_surat !== undefined) {
       updateData['nomor_surat'] = input.nomor_surat;
