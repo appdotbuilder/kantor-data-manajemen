@@ -156,14 +156,7 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
               </Button>
             </form>
 
-            {/* Demo Credentials Info */}
-            <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-              <p className="text-xs text-gray-600 text-center">
-                <strong>Demo Kredensial:</strong><br />
-                Email: kwarran.pagerbaang@gmail.com<br />
-                Password: Pgb112815
-              </p>
-            </div>
+
           </CardContent>
         </Card>
 
