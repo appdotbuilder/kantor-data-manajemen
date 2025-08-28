@@ -12,8 +12,7 @@ import {
   updateIncomingMailInputSchema,
   createOutgoingMailInputSchema,
   updateOutgoingMailInputSchema,
-  deleteInputSchema,
-  loginInputSchema
+  deleteInputSchema
 } from './schema';
 
 // Import handlers
@@ -29,7 +28,7 @@ import { createOutgoingMail } from './handlers/create_outgoing_mail';
 import { getOutgoingMail } from './handlers/get_outgoing_mail';
 import { updateOutgoingMail } from './handlers/update_outgoing_mail';
 import { deleteOutgoingMail } from './handlers/delete_outgoing_mail';
-import { login } from './handlers/login';
+
 
 const t = initTRPC.create({
   transformer: superjson,
@@ -43,11 +42,6 @@ const appRouter = router({
   healthcheck: publicProcedure.query(() => {
     return { status: 'ok', timestamp: new Date().toISOString() };
   }),
-
-  // Authentication
-  login: publicProcedure
-    .input(loginInputSchema)
-    .mutation(({ input }) => login(input)),
 
   // Inventory management routes
   inventory: router({

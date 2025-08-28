@@ -121,20 +121,3 @@ export const deleteInputSchema = z.object({
 
 export type DeleteInput = z.infer<typeof deleteInputSchema>;
 
-// Login schema
-export const loginInputSchema = z.object({
-  email: z.string().email("Email harus valid"),
-  password: z.string().min(1, "Password harus diisi")
-});
-
-export type LoginInput = z.infer<typeof loginInputSchema>;
-
-export const loginResponseSchema = z.object({
-  success: z.boolean(),
-  message: z.string(),
-  user: z.object({
-    email: z.string()
-  }).optional()
-});
-
-export type LoginResponse = z.infer<typeof loginResponseSchema>;
